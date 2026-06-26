@@ -29,6 +29,80 @@ input {
   font: inherit;
 }
 
+[hidden] {
+  display: none !important;
+}
+
+.login-screen {
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+  padding: 24px;
+  background:
+    radial-gradient(circle at 20% 12%, rgba(24, 170, 168, 0.2), transparent 34%),
+    linear-gradient(135deg, #f4fbfb, #ffffff);
+}
+
+.login-card {
+  display: grid;
+  gap: 14px;
+  width: min(100%, 440px);
+  padding: 32px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  box-shadow: 0 24px 70px rgba(5, 62, 97, 0.14);
+}
+
+.login-logo {
+  width: 82px;
+  height: 62px;
+  color: transparent;
+  background: url("../assets/sql-logo.webp") center / contain no-repeat;
+}
+
+.login-card h1 {
+  font-size: 36px;
+}
+
+.login-card label {
+  display: grid;
+  gap: 8px;
+  color: var(--primary-dark);
+  font-weight: 800;
+}
+
+.login-card input {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 14px;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+
+.btn-wide {
+  width: 100%;
+}
+
+.login-status {
+  min-height: 24px;
+  margin: 0;
+  font-weight: 800;
+}
+
+.login-status[data-type="error"] {
+  color: #9f1d1d;
+}
+
+.back-link {
+  color: var(--primary-dark);
+  font-weight: 800;
+  text-align: center;
+  text-decoration: none;
+}
+
 .admin-sidebar {
   position: fixed;
   inset: 0 auto 0 0;
@@ -87,6 +161,18 @@ html[dir="rtl"] .admin-sidebar {
 
 .view-site {
   border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.sidebar-actions {
+  display: grid;
+  gap: 10px;
+}
+
+.logout-button {
+  width: 100%;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.18);
 }
 
 .admin-main {
@@ -161,7 +247,7 @@ button,
 
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 16px;
   margin-bottom: 18px;
 }
@@ -191,6 +277,10 @@ button,
   line-height: 1;
 }
 
+.stats-grid .status-word {
+  font-size: 32px;
+}
+
 .stats-grid p {
   margin: 0;
 }
@@ -213,10 +303,19 @@ button,
 
 .table-row {
   display: grid;
-  grid-template-columns: 1.4fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 12px;
   padding: 14px 16px;
   border-top: 1px solid var(--line);
+}
+
+.table-row span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.messages-table .table-row {
+  grid-template-columns: 0.9fr 0.9fr 1fr 1fr 1.4fr 1fr;
 }
 
 .table-row:first-child {

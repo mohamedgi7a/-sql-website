@@ -11,26 +11,86 @@
   <link rel="stylesheet" href="admin.css">
 </head>
 <body>
-  <aside class="admin-sidebar">
+  <section class="login-screen" data-login-screen>
+    <form class="login-card" data-login-form>
+      <span class="login-logo">SQL</span>
+      <p class="eyebrow">لوحة التحكم</p>
+      <h1>تسجيل الدخول</h1>
+      <p>ادخل بيانات المسؤول لعرض طلبات الخدمة ورسائل التواصل.</p>
+      <label>اسم المستخدم أو البريد الإلكتروني<input type="email" name="email" autocomplete="username" placeholder="admin@example.com" required></label>
+      <label>كلمة المرور<input type="password" name="password" autocomplete="current-password" placeholder="••••••••" required></label>
+      <button class="btn-wide" type="submit">دخول لوحة التحكم</button>
+      <p class="login-status" data-login-status role="status"></p>
+      <a class="back-link" href="../index.html">العودة إلى الموقع</a>
+    </form>
+  </section>
+
+  <aside class="admin-sidebar" data-admin-shell hidden>
     <a class="admin-brand" href="index.html"><span>SQL</span><strong>لوحة صقور الإتقان</strong></a>
     <nav>
       <a class="active" href="#overview">نظرة عامة</a>
-      <a href="#pages">الصفحات</a>
-      <a href="#services">الخدمات</a>
-      <a href="#projects">المشاريع</a>
-      <a href="#blog">المدونة</a>
-      <a href="#messages">طلبات التواصل</a>
+      <a href="#service-requests">طلبات الخدمة</a>
+      <a href="#contact-messages">رسائل التواصل</a>
       <a href="#settings">الإعدادات</a>
     </nav>
-    <a class="view-site" href="../index.html">عرض الموقع</a>
+    <div class="sidebar-actions">
+      <a class="view-site" href="../index.html">عرض الموقع</a>
+      <button class="logout-button" type="button" data-logout>تسجيل الخروج</button>
+    </div>
   </aside>
-  <main class="admin-main">
-    <header class="admin-topbar"><div><p class="eyebrow">جاهزة للربط لاحقًا مع Supabase</p><h1>لوحة تحكم لإدارة محتوى صقور الإتقان</h1></div><button class="ghost-button" type="button">تسجيل الدخول لاحقًا</button></header>
-    <section id="overview" class="stats-grid"><article><span>الصفحات</span><strong>14</strong><p>عربية وإنجليزية</p></article><article><span>الخدمات</span><strong>10</strong><p>خدمات رئيسية</p></article><article><span>المشاريع</span><strong>4</strong><p>نماذج عرض</p></article><article><span>المقالات</span><strong>2</strong><p>نماذج لتحسين الظهور</p></article><article><span>الرسائل</span><strong>0</strong><p>بانتظار الربط</p></article></section>
-    <section id="services" class="admin-section"><div class="section-head"><div><p class="eyebrow">الخدمات</p><h2>إدارة الخدمات الرئيسية</h2></div><button type="button">إضافة خدمة</button></div><div class="editable-list"><button type="button">المقاولات العامة</button><button type="button">إدارة المرافق</button><button type="button">صيانة المباني</button><button type="button">خدمات النظافة</button><button type="button">توريد القوى العاملة</button><button type="button">كوادر الضيافة</button><button type="button">خدمات الأمن</button><button type="button">الصيانة الكهربائية</button><button type="button">الصيانة الميكانيكية</button><button type="button">تنسيق المواقع</button></div></section>
-    <section id="blog" class="admin-section"><div class="section-head"><div><p class="eyebrow">المدونة</p><h2>المقالات والكلمات الدلالية</h2></div><button type="button">إضافة مقال</button></div><div class="content-table"><div class="table-row table-header"><span>عنوان المقال</span><span>التصنيف</span><span>اللغة</span><span>الحالة</span></div><div class="table-row"><span>كيف تختار شركة إدارة مرافق مناسبة؟</span><span>إدارة المرافق</span><span>العربية</span><span class="status draft">مسودة</span></div><div class="table-row"><span>How to choose a facilities management partner</span><span>Facilities Management</span><span>English</span><span class="status draft">Draft</span></div></div></section>
-    <section id="messages" class="admin-section"><div class="section-head"><div><p class="eyebrow">طلبات الخدمة والتواصل</p><h2>طلبات العملاء بعد ربط النماذج</h2></div><button type="button">تصدير CSV</button></div><div class="empty-state"><h3>لا توجد طلبات بعد</h3><p>عند ربط Supabase ستظهر هنا طلبات الخدمة ورسائل التواصل مع حالة المتابعة.</p></div></section>
+
+  <main class="admin-main" data-admin-shell hidden>
+    <header class="admin-topbar">
+      <div>
+        <p class="eyebrow">مرتبطة مع Supabase</p>
+        <h1>طلبات العملاء ورسائل الموقع</h1>
+      </div>
+      <button class="ghost-button" type="button" data-refresh>تحديث البيانات</button>
+    </header>
+
+    <section id="overview" class="stats-grid">
+      <article><span>طلبات الخدمة</span><strong data-count-service>0</strong><p>طلبات واردة من نموذج طلب خدمة</p></article>
+      <article><span>رسائل التواصل</span><strong data-count-contact>0</strong><p>رسائل واردة من صفحة تواصل معنا</p></article>
+      <article><span>الحالة</span><strong class="status-word">نشطة</strong><p>الاتصال مع Supabase يعمل بعد الدخول</p></article>
+    </section>
+
+    <section id="service-requests" class="admin-section">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">طلبات الخدمة</p>
+          <h2>أحدث طلبات الخدمة</h2>
+        </div>
+      </div>
+      <div class="content-table responsive-table" data-service-list>
+        <div class="table-row table-header"><span>الشركة</span><span>المسؤول</span><span>الجوال</span><span>الخدمة</span><span>المدينة</span><span>التاريخ</span></div>
+      </div>
+      <div class="empty-state" data-empty-service hidden><h3>لا توجد طلبات خدمة بعد</h3><p>عندما يرسل العميل نموذج طلب خدمة ستظهر البيانات هنا.</p></div>
+    </section>
+
+    <section id="contact-messages" class="admin-section">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">رسائل التواصل</p>
+          <h2>أحدث رسائل التواصل</h2>
+        </div>
+      </div>
+      <div class="content-table responsive-table messages-table" data-contact-list>
+        <div class="table-row table-header"><span>الاسم</span><span>الجوال</span><span>البريد</span><span>الخدمة</span><span>الرسالة</span><span>التاريخ</span></div>
+      </div>
+      <div class="empty-state" data-empty-contact hidden><h3>لا توجد رسائل بعد</h3><p>عندما يرسل العميل رسالة من صفحة التواصل ستظهر هنا.</p></div>
+    </section>
+
+    <section id="settings" class="admin-section">
+      <div class="section-head compact">
+        <div>
+          <p class="eyebrow">الإعدادات</p>
+          <h2>إدارة الدخول</h2>
+          <p>إنشاء المستخدمين يتم من Supabase Authentication. هذه اللوحة تقبل أي مستخدم مسجل في مشروع Supabase الحالي.</p>
+        </div>
+      </div>
+    </section>
   </main>
+
   <script src="admin.js"></script>
 </body>
 </html>
