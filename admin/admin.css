@@ -519,3 +519,89 @@ button,
 .table-header {
   background: #f4fbfb;
 }
+
+/* Final admin layout repair */
+:root {
+  --admin-sidebar-width: 340px;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+.admin-sidebar {
+  width: var(--admin-sidebar-width) !important;
+  z-index: 20;
+}
+
+.admin-main {
+  width: calc(100% - var(--admin-sidebar-width)) !important;
+  max-width: calc(100% - var(--admin-sidebar-width)) !important;
+  margin-inline-start: 0 !important;
+  margin-inline-end: var(--admin-sidebar-width) !important;
+  overflow: hidden;
+}
+
+html[dir="ltr"] .admin-main {
+  margin-inline-start: var(--admin-sidebar-width) !important;
+  margin-inline-end: 0 !important;
+}
+
+.admin-topbar {
+  align-items: flex-start;
+}
+
+.admin-topbar h1 {
+  max-width: 920px;
+  font-size: clamp(32px, 4vw, 58px);
+}
+
+.stats-grid {
+  grid-template-columns: repeat(3, minmax(220px, 1fr));
+}
+
+.content-table {
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+}
+
+.content-table .table-row {
+  min-width: 980px;
+}
+
+.messages-table .table-row {
+  min-width: 1120px;
+}
+
+.empty-state {
+  min-width: 0;
+}
+
+@media (max-width: 1180px) {
+  :root {
+    --admin-sidebar-width: 300px;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 980px) {
+  .admin-sidebar {
+    width: auto !important;
+  }
+
+  .admin-main,
+  html[dir="rtl"] .admin-main,
+  html[dir="ltr"] .admin-main {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+  }
+
+  .content-table .table-row,
+  .messages-table .table-row {
+    min-width: 820px;
+  }
+}
