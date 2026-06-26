@@ -341,6 +341,19 @@ document.querySelectorAll("[data-service-carousel]").forEach((carousel) => {
   });
 
   track.dataset.marqueeReady = "true";
+
+  const pauseMarquee = () => {
+    track.style.animationPlayState = "paused";
+  };
+
+  const resumeMarquee = () => {
+    track.style.animationPlayState = "running";
+  };
+
+  carousel.addEventListener("mouseenter", pauseMarquee);
+  carousel.addEventListener("mouseleave", resumeMarquee);
+  carousel.addEventListener("focusin", pauseMarquee);
+  carousel.addEventListener("focusout", resumeMarquee);
 });
 
 const revealItems = document.querySelectorAll(".section, .trust-strip > div, .service-grid .service-card, .project-card, .post-card, .values-grid article, .process-list article, .featured-post, .blog-sidebar > div, .media-panel, .contact-info, .contact-form");
