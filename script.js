@@ -50,6 +50,101 @@ document.querySelectorAll(".filters button").forEach((button) => {
 });
 
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const supabaseConfig = {
+  url: "https://ibnjrcoqiactimyhhksf.supabase.co",
+  key: "sb_publishable_LpQzLxdeisfx1KG9PkM50g_Cdy2--xX"
+};
+
+const pageLanguage = document.documentElement.lang || (document.documentElement.dir === "rtl" ? "ar" : "en");
+const isArabic = document.documentElement.dir === "rtl";
+
+const formMessages = {
+  sending: isArabic ? "جاري الإرسال..." : "Sending...",
+  success: isArabic ? "تم إرسال الطلب بنجاح. سيتواصل معك فريقنا قريبا." : "Your request has been sent successfully. Our team will contact you soon.",
+  error: isArabic ? "تعذر الإرسال حاليا. حاول مرة أخرى أو تواصل معنا مباشرة." : "We could not send the form right now. Please try again or contact us directly."
+};
+
+const readFormValue = (formData, name) => String(formData.get(name) || "").trim();
+
+const setFormStatus = (form, message, type = "info") => {
+  let status = form.querySelector(".form-status");
+
+  if (!status) {
+    status = document.createElement("p");
+    status.className = "form-status";
+    status.setAttribute("role", "status");
+    form.append(status);
+  }
+
+  status.textContent = message;
+  status.dataset.type = type;
+};
+
+const postToSupabase = async (table, payload) => {
+  const response = await fetch(`${supabaseConfig.url}/rest/v1/${table}`, {
+    method: "POST",
+    headers: {
+      apikey: supabaseConfig.key,
+      Authorization: `Bearer ${supabaseConfig.key}`,
+      "Content-Type": "application/json",
+      Prefer: "return=minimal"
+    },
+    body: JSON.stringify(payload)
+  });
+
+  if (!response.ok) {
+    throw new Error(`Supabase insert failed: ${response.status}`);
+  }
+};
+
+document.querySelectorAll("form.contact-form").forEach((form) => {
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const submitButton = form.querySelector("[type='submit']");
+    const formData = new FormData(form);
+    const isServiceRequest = formData.has("details") || formData.has("company");
+    const table = isServiceRequest ? "service_requests" : "contact_messages";
+
+    const payload = isServiceRequest
+      ? {
+          company: readFormValue(formData, "company") || null,
+          contact_name: readFormValue(formData, "contact_name"),
+          phone: readFormValue(formData, "phone"),
+          email: readFormValue(formData, "email") || null,
+          city: readFormValue(formData, "city") || null,
+          facility_type: readFormValue(formData, "facility_type") || null,
+          service: readFormValue(formData, "service") || null,
+          urgency: readFormValue(formData, "urgency") || null,
+          preferred_date: readFormValue(formData, "preferred_date") || null,
+          details: readFormValue(formData, "details") || null,
+          page_language: pageLanguage,
+          source_page: window.location.pathname
+        }
+      : {
+          name: readFormValue(formData, "name"),
+          email: readFormValue(formData, "email") || null,
+          phone: readFormValue(formData, "phone") || null,
+          service: readFormValue(formData, "service") || null,
+          message: readFormValue(formData, "message"),
+          page_language: pageLanguage,
+          source_page: window.location.pathname
+        };
+
+    try {
+      if (submitButton) submitButton.disabled = true;
+      setFormStatus(form, formMessages.sending, "info");
+      await postToSupabase(table, payload);
+      form.reset();
+      setFormStatus(form, formMessages.success, "success");
+    } catch (error) {
+      console.error(error);
+      setFormStatus(form, formMessages.error, "error");
+    } finally {
+      if (submitButton) submitButton.disabled = false;
+    }
+  });
+});
 
 const homeHero = document.querySelector(".home-hero .hero-content");
 const heroTitle = homeHero?.querySelector("h1");
