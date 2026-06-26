@@ -3696,6 +3696,62 @@ html[dir="ltr"] .site-header,
   font-size: 13px;
 }
 
+.article-section {
+  max-width: 980px;
+}
+
+.article-detail {
+  display: grid;
+  gap: 18px;
+  padding: clamp(24px, 4vw, 46px);
+  border: 1px solid var(--color-line);
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 24px 70px rgba(0, 61, 91, 0.12);
+}
+
+.article-cover {
+  width: 100%;
+  aspect-ratio: 16 / 8;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.article-detail h1 {
+  max-width: 820px;
+  margin: 0;
+  color: var(--color-primary-dark);
+  font-size: clamp(32px, 5vw, 58px);
+  line-height: 1.25;
+}
+
+.article-excerpt {
+  max-width: 820px;
+  color: var(--color-muted);
+  font-size: clamp(18px, 2.2vw, 22px);
+  line-height: 1.9;
+}
+
+.article-body {
+  display: grid;
+  gap: 16px;
+  color: var(--color-ink);
+  font-size: 18px;
+  line-height: 2;
+}
+
+.article-body p {
+  margin: 0;
+}
+
+.article-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: center;
+  margin-top: 10px;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .hero-rotating-text {
     transition: none !important;

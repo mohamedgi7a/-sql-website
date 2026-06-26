@@ -149,8 +149,16 @@ document.querySelectorAll("form.contact-form").forEach((form) => {
 const blogGrid = document.querySelector("[data-blog-posts]");
 const featuredPost = document.querySelector("[data-featured-post]");
 const blogLoading = document.querySelector("[data-blog-loading]");
+const blogArticle = document.querySelector("[data-blog-article]");
+const articleLoading = document.querySelector("[data-article-loading]");
 
 const plainText = (value) => String(value || "").trim();
+const safeText = (value) => {
+  const span = document.createElement("span");
+  span.textContent = plainText(value);
+  return span.innerHTML;
+};
+const blogPostHref = (post) => `blog-post.html?slug=${encodeURIComponent(post.slug || "")}`;
 
 const renderBlogPostCard = (post) => `
   <article class="post-card">
@@ -158,7 +166,7 @@ const renderBlogPostCard = (post) => `
     <h3>${plainText(post.title)}</h3>
     <p>${plainText(post.excerpt)}</p>
     <div class="tag-list compact-tags">${(post.keywords || []).slice(0, 4).map((tag) => `<span>${plainText(tag)}</span>`).join("")}</div>
-    <a href="service-request.html">${isArabic ? "اطلب الخدمة" : "Request service"}</a>
+    <a href="${blogPostHref(post)}">${isArabic ? "قراءة المقال" : "Read article"}</a>
   </article>
 `;
 
@@ -193,7 +201,7 @@ const loadBlogPosts = async () => {
         <h2>${plainText(firstPost.title)}</h2>
         <p>${plainText(firstPost.excerpt)}</p>
         <div class="tag-list compact-tags">${(firstPost.keywords || []).slice(0, 6).map((tag) => `<span>${plainText(tag)}</span>`).join("")}</div>
-        <a class="text-link" href="service-request.html">${isArabic ? "اطلب هذه الخدمة" : "Request this service"}</a>
+        <a class="text-link" href="${blogPostHref(firstPost)}">${isArabic ? "قراءة المقال" : "Read article"}</a>
       </div>
     `;
 
@@ -207,6 +215,56 @@ const loadBlogPosts = async () => {
 };
 
 loadBlogPosts();
+
+const loadBlogArticle = async () => {
+  if (!blogArticle) return;
+
+  const slug = new URLSearchParams(window.location.search).get("slug");
+
+  if (!slug) {
+    if (articleLoading) articleLoading.textContent = isArabic ? "لم يتم تحديد المقال." : "No article selected.";
+    return;
+  }
+
+  try {
+    const response = await fetch(`${supabaseConfig.url}/rest/v1/blog_posts?select=*&status=eq.published&slug=eq.${encodeURIComponent(slug)}&limit=1`, {
+      headers: {
+        apikey: supabaseConfig.key,
+        Authorization: `Bearer ${supabaseConfig.key}`
+      }
+    });
+
+    if (!response.ok) throw new Error("Could not load article");
+
+    const [post] = await response.json();
+
+    if (!post) {
+      if (articleLoading) articleLoading.textContent = isArabic ? "المقال غير موجود أو غير منشور." : "Article not found or not published.";
+      return;
+    }
+
+    document.title = `${post.title} | ${isArabic ? "صقور الإتقان" : "Saqour Al-Itqan"}`;
+    if (articleLoading) articleLoading.hidden = true;
+
+    blogArticle.innerHTML = `
+      <img class="article-cover" src="${post.image_url || "https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=1400&q=80"}" alt="${safeText(post.title)}">
+      <p class="eyebrow">${safeText(post.category)}</p>
+      <h1>${safeText(post.title)}</h1>
+      <p class="article-excerpt">${safeText(post.excerpt)}</p>
+      <div class="tag-list compact-tags">${(post.keywords || []).map((tag) => `<span>${safeText(tag)}</span>`).join("")}</div>
+      <div class="article-body">${plainText(post.content).split("\n").filter(Boolean).map((paragraph) => `<p>${safeText(paragraph)}</p>`).join("")}</div>
+      <div class="article-actions">
+        <a class="btn btn-primary" href="service-request.html">${isArabic ? "طلب هذه الخدمة" : "Request this service"}</a>
+        <a class="text-link" href="blog.html">${isArabic ? "العودة إلى المدونة" : "Back to blog"}</a>
+      </div>
+    `;
+  } catch (error) {
+    console.error(error);
+    if (articleLoading) articleLoading.textContent = isArabic ? "تعذر تحميل المقال حاليا." : "Could not load this article right now.";
+  }
+};
+
+loadBlogArticle();
 
 const homeHero = document.querySelector(".home-hero .hero-content");
 const heroTitle = homeHero?.querySelector("h1");
