@@ -334,11 +334,19 @@ document.querySelectorAll("[data-service-carousel]").forEach((carousel) => {
   if (!track || reducedMotion || track.dataset.marqueeReady === "true") return;
 
   const cards = [...track.children];
-  cards.forEach((card) => {
-    const clone = card.cloneNode(true);
-    clone.setAttribute("aria-hidden", "true");
-    track.append(clone);
-  });
+  const cloneCards = () => {
+    cards.forEach((card) => {
+      const clone = card.cloneNode(true);
+      clone.setAttribute("aria-hidden", "true");
+      track.append(clone);
+    });
+  };
+
+  cloneCards();
+
+  while (track.scrollWidth < carousel.clientWidth * 3) {
+    cloneCards();
+  }
 
   track.dataset.marqueeReady = "true";
 

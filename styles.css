@@ -1666,6 +1666,25 @@ html[dir="ltr"] .page-hero::before {
   }
 }
 
+/* Keep the services strip visually full in RTL pages.
+   The page text stays RTL, but the moving rail itself runs in LTR geometry so
+   translateX(-50%) never exposes an empty side of the carousel. */
+.service-carousel {
+  direction: ltr;
+}
+
+.service-track {
+  min-width: max-content;
+}
+
+.service-track .service-card {
+  direction: rtl;
+}
+
+html[dir="ltr"] .service-track .service-card {
+  direction: ltr;
+}
+
 @media (max-width: 760px) {
   .home-hero {
     height: clamp(680px, 92vh, 820px);
