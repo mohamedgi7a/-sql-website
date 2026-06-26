@@ -15,6 +15,9 @@ const serviceCounter = document.querySelector("[data-count-service]");
 const contactCounter = document.querySelector("[data-count-contact]");
 const emptyService = document.querySelector("[data-empty-service]");
 const emptyContact = document.querySelector("[data-empty-contact]");
+const blogForm = document.querySelector("[data-blog-form]");
+const blogStatus = document.querySelector("[data-blog-status]");
+const blogList = document.querySelector("[data-blog-list]");
 
 const storageKey = "sql_admin_session";
 
@@ -140,6 +143,24 @@ const renderContactMessages = (rows) => {
   });
 };
 
+const renderBlogPosts = (rows) => {
+  if (!blogList) return;
+
+  blogList.querySelectorAll(".table-row:not(.table-header)").forEach((row) => row.remove());
+
+  rows.forEach((item) => {
+    blogList.insertAdjacentHTML("beforeend", `
+      <div class="table-row">
+        <span>${escapeText(item.title)}</span>
+        <span>${escapeText(item.category)}</span>
+        <span>${escapeText(item.language)}</span>
+        <span>${escapeText(item.status)}</span>
+        <span>${formatDate(item.created_at)}</span>
+      </div>
+    `);
+  });
+};
+
 const loadDashboard = async () => {
   const session = getSession();
 
@@ -152,13 +173,15 @@ const loadDashboard = async () => {
   refreshButton.textContent = "جاري التحديث...";
 
   try {
-    const [services, contacts] = await Promise.all([
+    const [services, contacts, posts] = await Promise.all([
       fetchTable("service_requests", session.access_token),
-      fetchTable("contact_messages", session.access_token)
+      fetchTable("contact_messages", session.access_token),
+      fetchTable("blog_posts", session.access_token)
     ]);
 
     renderServiceRequests(services);
     renderContactMessages(contacts);
+    renderBlogPosts(posts);
   } catch (error) {
     console.error(error);
     clearSession();
@@ -175,6 +198,62 @@ document.querySelectorAll(".admin-sidebar nav a").forEach((link) => {
     document.querySelectorAll(".admin-sidebar nav a").forEach((item) => item.classList.remove("active"));
     link.classList.add("active");
   });
+});
+
+blogForm?.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  const session = getSession();
+  if (!session?.access_token) return;
+
+  const formData = new FormData(blogForm);
+  const keywords = String(formData.get("keywords") || "")
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean);
+  const status = String(formData.get("status") || "published");
+  const payload = {
+    title: String(formData.get("title") || "").trim(),
+    slug: String(formData.get("slug") || "").trim(),
+    language: String(formData.get("language") || "ar"),
+    category: String(formData.get("category") || "").trim(),
+    keywords,
+    image_url: String(formData.get("image_url") || "").trim() || null,
+    excerpt: String(formData.get("excerpt") || "").trim(),
+    content: String(formData.get("content") || "").trim(),
+    status,
+    published_at: status === "published" ? new Date().toISOString() : null
+  };
+
+  const submit = blogForm.querySelector("[type='submit']");
+
+  try {
+    submit.disabled = true;
+    blogStatus.textContent = "جاري حفظ المقال...";
+    blogStatus.dataset.type = "info";
+
+    const response = await fetch(`${supabaseConfig.url}/rest/v1/blog_posts`, {
+      method: "POST",
+      headers: {
+        ...authHeaders(session.access_token),
+        Prefer: "return=minimal"
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (!response.ok) throw new Error("Could not save blog post");
+
+    blogForm.reset();
+    blogStatus.textContent = "تم حفظ المقال بنجاح.";
+    blogStatus.dataset.type = "success";
+    await loadDashboard();
+  } catch (error) {
+    console.error(error);
+    blogStatus.textContent = "تعذر حفظ المقال. تأكد من عدم تكرار الرابط المختصر slug.";
+    blogStatus.dataset.type = "error";
+  } finally {
+    submit.disabled = false;
+  }
 });
 
 loginForm?.addEventListener("submit", async (event) => {

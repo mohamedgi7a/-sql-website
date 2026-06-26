@@ -31,6 +31,7 @@
       <a class="active" href="#overview">نظرة عامة</a>
       <a href="#service-requests">طلبات الخدمة</a>
       <a href="#contact-messages">رسائل التواصل</a>
+      <a href="#blog-admin">المدونة</a>
       <a href="#settings">الإعدادات</a>
     </nav>
     <div class="sidebar-actions">
@@ -78,6 +79,32 @@
         <div class="table-row table-header"><span>الاسم</span><span>الجوال</span><span>البريد</span><span>الخدمة</span><span>الرسالة</span><span>التاريخ</span></div>
       </div>
       <div class="empty-state" data-empty-contact hidden><h3>لا توجد رسائل بعد</h3><p>عندما يرسل العميل رسالة من صفحة التواصل ستظهر هنا.</p></div>
+    </section>
+
+    <section id="blog-admin" class="admin-section">
+      <div class="section-head compact">
+        <div>
+          <p class="eyebrow">المدونة و SEO</p>
+          <h2>إضافة مقال جديد</h2>
+          <p>اكتب مقالات تستهدف كلمات مثل توريد عمالة، عمال تحميل وتنزيل، عاملات تعبئة وتغليف، وضيافة.</p>
+        </div>
+      </div>
+      <form class="blog-admin-form" data-blog-form>
+        <label>العنوان<input type="text" name="title" required placeholder="مثال: عمال تحميل وتنزيل في الرياض"></label>
+        <label>الرابط المختصر slug<input type="text" name="slug" required placeholder="loading-unloading-workers-riyadh"></label>
+        <label>اللغة<select name="language"><option value="ar">العربية</option><option value="en">English</option></select></label>
+        <label>التصنيف<input type="text" name="category" required placeholder="توريد العمالة"></label>
+        <label>الكلمات الدلالية<input type="text" name="keywords" placeholder="عمال تحميل وتنزيل, توريد عمالة, الرياض"></label>
+        <label>رابط الصورة<input type="url" name="image_url" placeholder="https://..."></label>
+        <label class="wide-field">وصف قصير<textarea name="excerpt" rows="3" required placeholder="ملخص يظهر في كرت المقال"></textarea></label>
+        <label class="wide-field">المحتوى<textarea name="content" rows="8" required placeholder="اكتب محتوى المقال هنا"></textarea></label>
+        <label>الحالة<select name="status"><option value="published">منشور</option><option value="draft">مسودة</option></select></label>
+        <button type="submit">نشر المقال</button>
+        <p class="login-status" data-blog-status role="status"></p>
+      </form>
+      <div class="content-table responsive-table" data-blog-list>
+        <div class="table-row table-header"><span>العنوان</span><span>التصنيف</span><span>اللغة</span><span>الحالة</span><span>التاريخ</span></div>
+      </div>
     </section>
 
     <section id="settings" class="admin-section">

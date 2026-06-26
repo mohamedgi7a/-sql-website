@@ -146,6 +146,68 @@ document.querySelectorAll("form.contact-form").forEach((form) => {
   });
 });
 
+const blogGrid = document.querySelector("[data-blog-posts]");
+const featuredPost = document.querySelector("[data-featured-post]");
+const blogLoading = document.querySelector("[data-blog-loading]");
+
+const plainText = (value) => String(value || "").trim();
+
+const renderBlogPostCard = (post) => `
+  <article class="post-card">
+    <span>${plainText(post.category)}</span>
+    <h3>${plainText(post.title)}</h3>
+    <p>${plainText(post.excerpt)}</p>
+    <div class="tag-list compact-tags">${(post.keywords || []).slice(0, 4).map((tag) => `<span>${plainText(tag)}</span>`).join("")}</div>
+    <a href="service-request.html">${isArabic ? "اطلب الخدمة" : "Request service"}</a>
+  </article>
+`;
+
+const loadBlogPosts = async () => {
+  if (!blogGrid || !featuredPost) return;
+
+  try {
+    const response = await fetch(`${supabaseConfig.url}/rest/v1/blog_posts?select=*&status=eq.published&language=eq.${pageLanguage}&order=published_at.desc`, {
+      headers: {
+        apikey: supabaseConfig.key,
+        Authorization: `Bearer ${supabaseConfig.key}`
+      }
+    });
+
+    if (!response.ok) throw new Error("Could not load blog posts");
+
+    const posts = await response.json();
+    const [firstPost, ...otherPosts] = posts;
+
+    if (blogLoading) blogLoading.hidden = true;
+
+    if (!firstPost) {
+      blogGrid.innerHTML = `<div class="empty-state"><h3>${isArabic ? "لا توجد مقالات منشورة بعد" : "No published articles yet"}</h3></div>`;
+      return;
+    }
+
+    featuredPost.hidden = false;
+    featuredPost.innerHTML = `
+      <img src="${firstPost.image_url || "https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=1200&q=80"}" alt="${plainText(firstPost.title)}">
+      <div>
+        <p class="eyebrow">${isArabic ? "مقال مميز" : "Featured"}</p>
+        <h2>${plainText(firstPost.title)}</h2>
+        <p>${plainText(firstPost.excerpt)}</p>
+        <div class="tag-list compact-tags">${(firstPost.keywords || []).slice(0, 6).map((tag) => `<span>${plainText(tag)}</span>`).join("")}</div>
+        <a class="text-link" href="service-request.html">${isArabic ? "اطلب هذه الخدمة" : "Request this service"}</a>
+      </div>
+    `;
+
+    blogGrid.innerHTML = otherPosts.map(renderBlogPostCard).join("");
+  } catch (error) {
+    console.error(error);
+    if (blogLoading) {
+      blogLoading.textContent = isArabic ? "تعذر تحميل المقالات حاليا." : "Could not load articles right now.";
+    }
+  }
+};
+
+loadBlogPosts();
+
 const homeHero = document.querySelector(".home-hero .hero-content");
 const heroTitle = homeHero?.querySelector("h1");
 const heroText = homeHero?.querySelector("p:not(.eyebrow)");

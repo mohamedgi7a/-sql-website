@@ -3679,6 +3679,23 @@ html[dir="ltr"] .site-header,
   background: rgba(185, 28, 28, 0.08);
 }
 
+.blog-loading {
+  padding: 24px;
+  color: var(--color-primary-dark);
+  background: #fff;
+  border: 1px solid var(--color-line);
+  border-radius: 8px;
+  font-weight: 800;
+}
+
+.compact-tags {
+  margin: 14px 0;
+}
+
+.compact-tags span {
+  font-size: 13px;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .hero-rotating-text {
     transition: none !important;
