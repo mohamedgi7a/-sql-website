@@ -327,6 +327,12 @@ html[dir="ltr"] .text-link:hover::after {
   width: 100%;
 }
 
+.header-end {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .header-actions {
   display: inline-flex;
   align-items: center;
@@ -1465,14 +1471,28 @@ html[dir="ltr"] .page-hero::before {
 
 @media (max-width: 980px) {
   .site-header {
-    grid-template-columns: auto 1fr auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .brand {
+    order: 0;
+  }
+  .site-nav {
+    order: 1;
+  }
+  .header-end {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    order: 2;
   }
   .nav-toggle {
     display: flex;
-    order: 3;
   }
   .header-actions {
-    order: 2;
+    order: unset;
   }
   .header-actions .header-cta {
     display: none; /* keep header tidy on mobile; CTA repeated in footer & hero */
