@@ -408,7 +408,7 @@ html[dir="ltr"] .text-link:hover::after {
   content: "";
   position: absolute;
   inset: 0;
-  background-image: url("assets/hero-team.png");
+  background-image: url("assets/hero-team.webp");
   background-size: cover;
   background-position: center top;
   z-index: 0;
@@ -1922,7 +1922,7 @@ html[dir="ltr"] .service-track .service-card {
 .footer-brand .brand-mark {
   width: 94px;
   height: 64px;
-  background-image: url("assets/sql-logo.png");
+  background-image: url("assets/sql-logo.webp");
 }
 
 .falfa-header .site-nav a {
@@ -1965,21 +1965,21 @@ html[dir="ltr"] .service-track .service-card {
   background:
     radial-gradient(circle at 72% 28%, rgba(32, 197, 193, 0.34), transparent 27%),
     linear-gradient(135deg, rgba(244, 251, 251, 0.78), rgba(102, 142, 150, 0.72) 42%, rgba(5, 62, 97, 0.96) 100%),
-    url("assets/hero-team.png") center top / cover no-repeat;
+    url("assets/hero-team.webp") center top / cover no-repeat;
 }
 
 .falfa-hero-bg:nth-child(2) {
   background:
     radial-gradient(circle at 70% 24%, rgba(230, 188, 130, 0.26), transparent 25%),
     linear-gradient(135deg, rgba(244, 251, 251, 0.82), rgba(22, 179, 174, 0.52) 44%, rgba(6, 50, 77, 0.98) 100%),
-    url("assets/hero-team.png") center center / cover no-repeat;
+    url("assets/hero-team.webp") center center / cover no-repeat;
 }
 
 .falfa-hero-bg:nth-child(3) {
   background:
     radial-gradient(circle at 76% 20%, rgba(32, 197, 193, 0.32), transparent 26%),
     linear-gradient(135deg, rgba(255, 255, 255, 0.78), rgba(94, 113, 128, 0.62) 42%, rgba(3, 34, 53, 0.98) 100%),
-    url("assets/hero-team.png") center top / cover no-repeat;
+    url("assets/hero-team.webp") center top / cover no-repeat;
 }
 
 .falfa-hero-bg.active {
@@ -2275,13 +2275,13 @@ html[dir="ltr"] .service-track .service-card {
   height: 225px;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(5, 62, 97, 0.22)),
-    url("assets/service-workers.jpg") center / cover no-repeat;
+    url("assets/service-workers.webp") center / cover no-repeat;
 }
 
 .falfa-service-image.workers {
   background-image:
     linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(5, 62, 97, 0.22)),
-    url("assets/service-workers.jpg");
+    url("assets/service-workers.webp");
   background-size: cover;
   background-position: center;
 }
@@ -2289,7 +2289,7 @@ html[dir="ltr"] .service-track .service-card {
 .falfa-service-image.delivery {
   background-image:
     linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(5, 62, 97, 0.22)),
-    url("assets/service-delivery.jpg?v=2");
+    url("assets/service-delivery.webp?v=2");
   background-size: cover;
   background-position: center top;
 }
@@ -2297,7 +2297,7 @@ html[dir="ltr"] .service-track .service-card {
 .falfa-service-image.cleaning {
   background-image:
     linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(5, 62, 97, 0.22)),
-    url("assets/service-cleaning.jpg");
+    url("assets/service-cleaning.webp");
   background-size: cover;
   background-position: center;
 }
@@ -2305,7 +2305,7 @@ html[dir="ltr"] .service-track .service-card {
 .falfa-service-image.hospitality {
   background-image:
     linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(5, 62, 97, 0.22)),
-    url("assets/service-hospitality.jpg");
+    url("assets/service-hospitality.webp");
   background-size: cover;
   background-position: center;
 }
@@ -2313,7 +2313,7 @@ html[dir="ltr"] .service-track .service-card {
 .falfa-service-image.security {
   background-image:
     linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(5, 62, 97, 0.22)),
-    url("assets/service-security.jpg");
+    url("assets/service-security.webp");
   background-size: cover;
   background-position: center top;
 }
@@ -2321,7 +2321,7 @@ html[dir="ltr"] .service-track .service-card {
 .falfa-service-image.maintenance {
   background-image:
     linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(5, 62, 97, 0.22)),
-    url("assets/service-maintenance.jpg");
+    url("assets/service-maintenance.webp");
   background-size: cover;
   background-position: center;
 }
@@ -2437,7 +2437,7 @@ html[dir="ltr"] .service-track .service-card {
 .falfa-cta {
   background:
     linear-gradient(90deg, rgba(6, 50, 77, 0.95), rgba(24, 170, 168, 0.78)),
-    url("assets/hero-team.png") center / cover no-repeat;
+    url("assets/hero-team.webp") center / cover no-repeat;
 }
 
 .falfa-cta h2,
@@ -2556,7 +2556,7 @@ html[dir="ltr"] .service-track .service-card {
   display: flex;
   justify-content: center;
   padding-top: 42px;
-  animation: falfaIntroRise 820ms ease both;
+  animation: logoSlideIn 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .opening-logo-card img {
