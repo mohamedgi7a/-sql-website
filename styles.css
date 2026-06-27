@@ -87,6 +87,10 @@ html {
   }
 }
 
+html {
+  overflow-x: hidden;
+}
+
 body {
   margin: 0;
   font-family: var(--font-base);
@@ -96,6 +100,7 @@ body {
   background: var(--color-surface);
   text-align: start;
   overflow-x: hidden;
+  max-width: 100vw;
 }
 
 img {
@@ -1644,7 +1649,7 @@ html[dir="ltr"] .page-hero::before {
     transform: none;
   }
   .service-carousel {
-    overflow-x: auto;
+    overflow: hidden;
   }
 }
 
