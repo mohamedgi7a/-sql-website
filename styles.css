@@ -395,12 +395,19 @@ html[dir="ltr"] .text-link:hover::after {
 }
 
 .home-hero {
-  /* Fixed height: the rotating headline varies in length, so we anchor the
-     whole content block to the bottom (align-items:end on .hero) and keep the
-     hero height constant. Longer/shorter text only changes how much of the
-     background image shows above the text — the hero never grows or shrinks. */
   height: clamp(680px, 88vh, 860px);
-  background-image: url("https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&w=1800&q=80");
+  background-image: url("assets/hero-team.png");
+  background-size: cover;
+  background-position: center top;
+}
+
+.home-hero::before {
+  background: linear-gradient(
+    to inline-start,
+    rgba(6, 50, 77, 0.25) 0%,
+    rgba(6, 50, 77, 0.75) 55%,
+    rgba(6, 50, 77, 0.92) 100%
+  );
 }
 
 .page-hero {
@@ -451,7 +458,7 @@ html[dir="ltr"] .page-hero::before {
 .hero h1,
 .page-hero h1 {
   margin: 0 0 20px;
-  font-size: clamp(36px, 5.4vw, 72px);
+  font-size: clamp(28px, 3.8vw, 52px);
   line-height: 1.15;
   color: #fff;
 }
@@ -1497,12 +1504,12 @@ html[dir="ltr"] .page-hero::before {
 
 /* hero rotating headline */
 .hero-rotating-text {
-  transition: opacity 0.26s ease, transform 0.26s ease;
+  transition: opacity 0.4s ease;
+  will-change: opacity;
 }
 
 .home-hero .hero-content.is-changing .hero-rotating-text {
   opacity: 0;
-  transform: translateY(10px);
 }
 
 /* 20. ---------- Responsive ---------- */
