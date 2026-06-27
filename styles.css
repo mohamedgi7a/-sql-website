@@ -401,12 +401,22 @@ html[dir="ltr"] .text-link:hover::after {
 
 .home-hero {
   height: clamp(680px, 88vh, 860px);
+}
+
+/* Background image lives on ::after so it can fade in independently */
+.home-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
   background-image: url("assets/hero-team.png");
   background-size: cover;
   background-position: center top;
+  z-index: 0;
+  animation: heroImageIn 800ms ease-out both;
 }
 
 .home-hero::before {
+  z-index: 1;
   background: linear-gradient(
     to inline-start,
     rgba(6, 50, 77, 0.25) 0%,
@@ -455,7 +465,7 @@ html[dir="ltr"] .page-hero::before {
 .hero-content,
 .page-hero > div {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   max-width: 720px;
   text-align: start;
 }
@@ -1475,13 +1485,44 @@ html[dir="ltr"] .page-hero::before {
 }
 
 /* 19. ---------- Motion ---------- */
-@keyframes heroRise {
-  from { opacity: 0; transform: translateY(24px); }
+@keyframes heroImageIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes heroItemIn {
+  from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: none; }
 }
 
-.hero-content {
-  animation: heroRise 0.8s ease both;
+/* Staggered entrance: image → eyebrow+h1 → p → buttons */
+.home-hero .hero-content > .eyebrow {
+  opacity: 0;
+  animation: heroItemIn 500ms ease-out 950ms both;
+}
+.home-hero .hero-content > h1 {
+  opacity: 0;
+  animation: heroItemIn 500ms ease-out 950ms both;
+}
+.home-hero .hero-content > p:not(.eyebrow) {
+  opacity: 0;
+  animation: heroItemIn 500ms ease-out 1100ms both;
+}
+.home-hero .hero-content > .hero-actions {
+  opacity: 0;
+  animation: heroItemIn 500ms ease-out 1250ms both;
+}
+
+/* Respect reduced-motion: skip entrance, show immediately */
+@media (prefers-reduced-motion: reduce) {
+  .home-hero::after { animation: none; }
+  .home-hero .hero-content > .eyebrow,
+  .home-hero .hero-content > h1,
+  .home-hero .hero-content > p:not(.eyebrow),
+  .home-hero .hero-content > .hero-actions {
+    opacity: 1;
+    animation: none;
+  }
 }
 
 @keyframes marquee {
