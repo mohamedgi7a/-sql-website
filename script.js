@@ -364,6 +364,26 @@ document.querySelectorAll("[data-service-carousel]").forEach((carousel) => {
   carousel.addEventListener("focusout", resumeMarquee);
 });
 
+// Clients marquee — wait for images to load so scrollWidth is accurate
+window.addEventListener("load", function () {
+  const track = document.querySelector(".clients-track");
+  if (!track || reducedMotion) return;
+
+  const origImgs = [...track.children];
+  const clone = () => {
+    origImgs.forEach((img) => {
+      const c = img.cloneNode(true);
+      c.setAttribute("aria-hidden", "true");
+      track.append(c);
+    });
+  };
+
+  clone();
+  while (track.scrollWidth < window.innerWidth * 3) clone();
+
+  track.dataset.marqueeReady = "true";
+});
+
 const revealItems = document.querySelectorAll(".section, .trust-strip > div, .service-grid .service-card, .project-card, .post-card, .values-grid article, .process-list article, .featured-post, .blog-sidebar > div, .media-panel, .contact-info, .contact-form");
 
 if ("IntersectionObserver" in window) {

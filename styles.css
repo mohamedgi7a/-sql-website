@@ -795,7 +795,56 @@ html[dir="ltr"] .page-hero::before {
   color: rgba(255, 255, 255, 0.74);
 }
 
-/* 11. ---------- Home: CTA band ---------- */
+/* 11. ---------- Home: Clients ---------- */
+.clients-section {
+  text-align: center;
+  overflow: hidden;
+  padding-block: 60px;
+}
+
+.clients-track-wrapper {
+  overflow: hidden;
+  width: 100%;
+  margin-top: 40px;
+  direction: ltr;
+}
+
+.clients-track {
+  display: flex;
+  align-items: center;
+  gap: 48px;
+  width: max-content;
+  will-change: transform;
+}
+
+.clients-track[data-marquee-ready="true"] {
+  animation: scroll-ltr 30s linear infinite;
+}
+
+@keyframes scroll-ltr {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.clients-track img {
+  height: 64px;
+  width: auto;
+  object-fit: contain;
+  filter: grayscale(1) opacity(0.6);
+  transition: filter 0.3s;
+  flex-shrink: 0;
+}
+
+.clients-track img:hover {
+  filter: grayscale(0) opacity(1);
+}
+
+@keyframes scroll-rtl {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* 12. ---------- Home: CTA band ---------- */
 .cta-band {
   text-align: center;
   background: var(--color-panel);
