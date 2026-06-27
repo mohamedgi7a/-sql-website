@@ -638,6 +638,8 @@ html[dir="ltr"] .page-hero::before {
 .services-slider-section {
   background: var(--grad-deep);
   color: #fff;
+  padding-block: 60px;
+  overflow: hidden;
 }
 
 .services-slider-section .eyebrow {
@@ -652,6 +654,7 @@ html[dir="ltr"] .page-hero::before {
   max-width: var(--content-max);
   margin-inline: auto;
   margin-block-end: 36px;
+  padding-inline: 20px;
 }
 
 .services-slider-head h2 {
@@ -1621,6 +1624,7 @@ html[dir="ltr"] .page-hero::before {
   .services-slider-head {
     flex-direction: column;
     align-items: stretch;
+    padding-inline: 20px;
   }
   .about-showcase-grid {
     grid-template-columns: 1fr;
@@ -1703,6 +1707,8 @@ html[dir="ltr"] .page-hero::before {
 .service-carousel {
   position: relative;
   overflow: hidden;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
 }
 
 .service-carousel::before,
