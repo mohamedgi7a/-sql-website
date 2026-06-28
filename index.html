@@ -41,7 +41,7 @@
     <section class="falfa-opening" aria-label="بداية الموقع">
       <div class="falfa-opening-inner">
         <div class="opening-logo-card">
-          <img src="assets/sql-logo.webp" alt="SQL صقور الإتقان للخدمات المساندة">
+          <img src="assets/sql-logo-transparent-clean.png" alt="SQL صقور الإتقان للخدمات المساندة">
         </div>
         <div class="opening-services">
           <article class="opening-service">
@@ -66,11 +66,11 @@
       </div>
     </section>
 
-    <section class="falfa-vision-mission" aria-label="رؤيتنا ورسالتنا وأهدافنا">
+    <section class="falfa-vision-mission" data-timeline-section aria-label="رؤيتنا ورسالتنا وأهدافنا">
       <div class="vision-shape" aria-hidden="true"></div>
       <div class="vision-grid">
 
-        <div class="vision-row" data-dir="left">
+        <div class="vision-row" data-dir="left" data-timeline-step>
           <article class="vision-text">
             <h2>رؤيتنا</h2>
             <p>نواكب سرعة النمو في المملكة، ونطمح أن تكون صقور الإتقان شريكاً موثوقاً للشركات الناجحة في نطاق مجالها.</p>
@@ -80,7 +80,7 @@
           </figure>
         </div>
 
-        <div class="vision-row" data-dir="right">
+        <div class="vision-row" data-dir="right" data-timeline-step>
           <figure class="vision-photo">
             <img src="assets/about-mission.webp" alt="رسالتنا">
           </figure>
@@ -90,7 +90,7 @@
           </article>
         </div>
 
-        <div class="vision-row" data-dir="left">
+        <div class="vision-row" data-dir="left" data-timeline-step>
           <article class="vision-text">
             <h2>أهدافنا</h2>
             <p>نسعى لتوسيع نطاق خدماتنا عبر مناطق المملكة، ورفع جودة التشغيل في كل موقع، وبناء شراكات طويلة مع عملائنا تقوم على الثقة والالتزام والاستمرارية.</p>
@@ -103,7 +103,7 @@
       </div>
     </section>
 
-    <section class="section falfa-services-section">
+    <section class="section falfa-services-section" data-services-timeline>
       <div class="falfa-section-title">
         <div>
           <p class="eyebrow">خدماتنا</p>
@@ -112,52 +112,88 @@
         <a class="all-services-btn" href="services.html"><span></span>جميع الخدمات</a>
       </div>
       <div class="falfa-services-grid">
-        <article class="falfa-service-card">
-          <div class="falfa-service-image workers"></div>
-          <div>
-            <h3>توريد القوى العاملة</h3>
-            <p>كوادر تشغيلية وفنية للمواقع التجارية والصناعية والسكنية.</p>
-            <a href="services.html">عرض التفاصيل <span>+</span></a>
+        <article class="falfa-service-card" data-service-step tabindex="0">
+          <div class="service-flip-inner">
+            <div class="service-card-face service-card-front">
+              <span class="service-emoji" aria-hidden="true">👷</span>
+              <h3>توريد القوى العاملة</h3>
+              <small>مرّر أو اضغط للتفاصيل</small>
+            </div>
+            <div class="service-card-face service-card-back">
+              <h3>توريد القوى العاملة</h3>
+              <p>كوادر تشغيلية وفنية للمواقع التجارية والصناعية والسكنية حسب احتياج كل منشأة.</p>
+              <a href="services.html">عرض التفاصيل <span>+</span></a>
+            </div>
           </div>
         </article>
-        <article class="falfa-service-card">
-          <div class="falfa-service-image delivery"></div>
-          <div>
-            <h3>خدمات التوصيل</h3>
-            <p>دعم لوجستي للمطاعم والمتاجر ومنصات الطلبات.</p>
-            <a href="services.html">عرض التفاصيل <span>+</span></a>
+        <article class="falfa-service-card" data-service-step tabindex="0">
+          <div class="service-flip-inner">
+            <div class="service-card-face service-card-front">
+              <span class="service-emoji" aria-hidden="true">🚚</span>
+              <h3>خدمات التوصيل</h3>
+              <small>مرّر أو اضغط للتفاصيل</small>
+            </div>
+            <div class="service-card-face service-card-back">
+              <h3>خدمات التوصيل</h3>
+              <p>دعم لوجستي للمطاعم والمتاجر ومنصات الطلبات مع تنظيم للعمليات اليومية.</p>
+              <a href="services.html">عرض التفاصيل <span>+</span></a>
+            </div>
           </div>
         </article>
-        <article class="falfa-service-card">
-          <div class="falfa-service-image cleaning"></div>
-          <div>
-            <h3>خدمات النظافة</h3>
-            <p>فرق نظافة للمرافق التجارية والسكنية والصناعية.</p>
-            <a href="services.html">عرض التفاصيل <span>+</span></a>
+        <article class="falfa-service-card" data-service-step tabindex="0">
+          <div class="service-flip-inner">
+            <div class="service-card-face service-card-front">
+              <span class="service-emoji" aria-hidden="true">✨</span>
+              <h3>خدمات النظافة</h3>
+              <small>مرّر أو اضغط للتفاصيل</small>
+            </div>
+            <div class="service-card-face service-card-back">
+              <h3>خدمات النظافة</h3>
+              <p>فرق نظافة للمرافق التجارية والسكنية والصناعية وفق جداول تشغيل واضحة.</p>
+              <a href="services.html">عرض التفاصيل <span>+</span></a>
+            </div>
           </div>
         </article>
-        <article class="falfa-service-card">
-          <div class="falfa-service-image hospitality"></div>
-          <div>
-            <h3>كوادر الضيافة والاستقبال</h3>
-            <p>موظفو استقبال وضيافة وخدمة عملاء للمكاتب والمناسبات.</p>
-            <a href="services.html">عرض التفاصيل <span>+</span></a>
+        <article class="falfa-service-card" data-service-step tabindex="0">
+          <div class="service-flip-inner">
+            <div class="service-card-face service-card-front">
+              <span class="service-emoji" aria-hidden="true">☕</span>
+              <h3>كوادر الضيافة والاستقبال</h3>
+              <small>مرّر أو اضغط للتفاصيل</small>
+            </div>
+            <div class="service-card-face service-card-back">
+              <h3>كوادر الضيافة والاستقبال</h3>
+              <p>موظفو استقبال وضيافة وخدمة عملاء للمكاتب والمناسبات والقطاعات المختلفة.</p>
+              <a href="services.html">عرض التفاصيل <span>+</span></a>
+            </div>
           </div>
         </article>
-        <article class="falfa-service-card">
-          <div class="falfa-service-image security"></div>
-          <div>
-            <h3>خدمات الأمن</h3>
-            <p>أفراد أمن وتنظيم دخول للمواقع والفعاليات.</p>
-            <a href="services.html">عرض التفاصيل <span>+</span></a>
+        <article class="falfa-service-card" data-service-step tabindex="0">
+          <div class="service-flip-inner">
+            <div class="service-card-face service-card-front">
+              <span class="service-emoji" aria-hidden="true">🛡️</span>
+              <h3>خدمات الأمن</h3>
+              <small>مرّر أو اضغط للتفاصيل</small>
+            </div>
+            <div class="service-card-face service-card-back">
+              <h3>خدمات الأمن</h3>
+              <p>أفراد أمن وتنظيم دخول للمواقع والفعاليات مع متابعة تشغيلية مستمرة.</p>
+              <a href="services.html">عرض التفاصيل <span>+</span></a>
+            </div>
           </div>
         </article>
-        <article class="falfa-service-card">
-          <div class="falfa-service-image maintenance"></div>
-          <div>
-            <h3>الصيانة والتشغيل</h3>
-            <p>دعم فني وتشغيلي للمباني والمرافق لضمان الجاهزية.</p>
-            <a href="services.html">عرض التفاصيل <span>+</span></a>
+        <article class="falfa-service-card" data-service-step tabindex="0">
+          <div class="service-flip-inner">
+            <div class="service-card-face service-card-front">
+              <span class="service-emoji" aria-hidden="true">🛠️</span>
+              <h3>الصيانة والتشغيل</h3>
+              <small>مرّر أو اضغط للتفاصيل</small>
+            </div>
+            <div class="service-card-face service-card-back">
+              <h3>الصيانة والتشغيل</h3>
+              <p>دعم فني وتشغيلي للمباني والمرافق لضمان الجاهزية وتقليل التعطّل.</p>
+              <a href="services.html">عرض التفاصيل <span>+</span></a>
+            </div>
           </div>
         </article>
       </div>
@@ -166,29 +202,44 @@
     <section class="section falfa-dark-band">
       <div class="section-head">
         <p class="eyebrow">لماذا نحن</p>
-        <h2>منهجية تشغيلية واضحة من الطلب إلى المتابعة</h2>
-        <p>النتيجة الجيدة تأتي من اختيار الفريق المناسب، ثم متابعة الأداء، ثم معالجة الملاحظات بسرعة.</p>
+        <h2>لماذا شركة صقور الإتقان</h2>
+        <p>مسؤوليتنا هي إعداد شركائنا بالقوى العاملة المدربة وتقديم كافة الخدمات التشغيلية وتوريد الأدوات اللازمة لاحتياجات المشاريع، صقور الإتقان رائدة في الحلول المبتكرة لقطاع الأعمال والخدمات التشغيلية.</p>
       </div>
-      <div class="process-list">
-        <article><span>1</span><h3>فهم الاحتياج</h3><p>نراجع طبيعة النشاط وعدد الأفراد وساعات العمل.</p></article>
-        <article><span>2</span><h3>تجهيز الفريق</h3><p>نختار الكوادر المناسبة حسب نوع الموقع والمهام.</p></article>
-        <article><span>3</span><h3>بدء التشغيل</h3><p>تنظيم الحضور والإشراف والتواصل مع العميل.</p></article>
-        <article><span>4</span><h3>متابعة الجودة</h3><p>تقارير وملاحظات وتحسين مستمر لجودة الخدمة.</p></article>
+      <div class="process-list why-us-list">
+        <article><span>👨‍💼</span><div><h3>عقود تشغيل القوى العاملة سنوية وشهرية</h3><p>حلول القوى العاملة وخدمات التوريد والخدمات التشغيلية.</p></div></article>
+        <article><span>👷</span><div><h3>عقود تشغيل وصيانة أسبوعية شهرية وسنوية</h3><p>تعتبر صقور الإتقان الشركة الأولى والرائدة في تقديم خدمات التشغيل والصيانة والنظافة.</p></div></article>
+        <article><span>🤝</span><div><h3>عقود تشغيل ونظافة لجميع القطاعات</h3><p>وجهتك الأولى لتوريد وتشغيل الشركات والقطاعات بعقود متوائمة مع الأنظمة والقوانين.</p></div></article>
       </div>
     </section>
 
-    <section class="section falfa-sectors-section">
+    <section class="section business-solutions-section" data-business-solutions>
+      <div class="business-title">
+        <span aria-hidden="true"></span>
+        <h2>حلول قطاع الأعمال</h2>
+        <span aria-hidden="true"></span>
+      </div>
+      <div class="business-solutions-grid">
+        <article data-business-step><span>👨‍💼</span><h3>الإدارة التشغيلية</h3><p>إدارة التشغيل لدينا تتمتع برؤية واضحة ومحكومة بعناصر مهمة.</p></article>
+        <article data-business-step><span>👥</span><h3>الإدارة الشاملة للكوادر البشرية</h3><p>إدارة فعالة لموارد العمل لتحسين الإنتاجية وضمان التنفيذ السلس للمشروع.</p></article>
+        <article data-business-step><span>🏆</span><h3>النهج المركز للعميل</h3><p>مكرس لفهم وتلبية متطلبات القوى العاملة لدى العميل من خلال خدمة مخصصة وسريعة الاستجابة.</p></article>
+        <article data-business-step><span>🦺</span><h3>السلامة والامتثال</h3><p>يلتزم موظفونا بأعلى معايير السلامة والامتثال التنظيمي، مما يضمن بيئة عمل آمنة وقانونية.</p></article>
+        <article data-business-step><span>📋</span><h3>الالتزام بالأنظمة والحوكمة</h3><p>تنفيذ عملياتنا وفق أعلى معايير الامتثال والجودة بشفافية كاملة وموثوقة.</p></article>
+        <article data-business-step><span>💡</span><h3>حلول مبتكرة وتقنيات حديثة</h3><p>نعتمد على أحدث التقنيات لإدارة المنشآت والبنية التحتية لتحسين الأداء وخفض التكاليف.</p></article>
+      </div>
+    </section>
+
+    <section class="section falfa-sectors-section" data-sectors-motion>
       <div class="section-head">
         <p class="eyebrow">القطاعات</p>
         <h2>نخدم قطاعات تحتاج إلى تشغيل يومي مستقر</h2>
       </div>
       <div class="falfa-sectors-grid">
-        <article><span>🍽</span><strong>المطاعم</strong></article>
-        <article><span>☕</span><strong>المقاهي</strong></article>
-        <article><span>📦</span><strong>المستودعات</strong></article>
-        <article><span>🏢</span><strong>الشركات</strong></article>
-        <article><span>🏬</span><strong>المتاجر</strong></article>
-        <article><span>🎪</span><strong>الفعاليات</strong></article>
+        <article data-sector-step><span>🍽</span><strong>المطاعم</strong></article>
+        <article data-sector-step><span>☕</span><strong>المقاهي</strong></article>
+        <article data-sector-step><span>📦</span><strong>المستودعات</strong></article>
+        <article data-sector-step><span>🏢</span><strong>الشركات</strong></article>
+        <article data-sector-step><span>🏬</span><strong>المتاجر</strong></article>
+        <article data-sector-step><span>🎪</span><strong>الفعاليات</strong></article>
       </div>
     </section>
 
@@ -199,20 +250,36 @@
       <div><span class="metric">24/7</span><p>متابعة تشغيلية</p></div>
     </section>
 
+    <section class="section specializations-section" data-specializations>
+      <div class="business-title specializations-title">
+        <span aria-hidden="true"></span>
+        <h2>التخصصات</h2>
+        <span aria-hidden="true"></span>
+      </div>
+      <p class="specializations-subtitle">لدينا عمالة مدربة للعمل في مختلف التخصصات</p>
+      <div class="specializations-grid">
+        <article data-specialization-step><span>🎨</span><h3>أعمال التشغيل O&amp;M</h3><p>نقوم بتنفيذ أعمال التشغيل والصيانة المتقدمة O&amp;M لجميع المشاريع والقطاعات والبنية التحتية وفق خطط واضحة وجودة عالية تضمن سلامة واستدامة المشاريع.</p><a href="services.html">إكتشف المزيد</a></article>
+        <article data-specialization-step><span>🟣</span><h3>توفير القوى العاملة</h3><p>تقديم خدمات توريد وتأجير القوى العاملة لكافة الشركات والقطاعات الحكومية والأهلية في مختلف مناطق المملكة العربية السعودية بعقود تشغيل مرنة.</p><a href="services.html">إكتشف المزيد</a></article>
+        <article data-specialization-step><span>📊</span><h3>التشغيل والصيانة</h3><p>تقديم خدمات التشغيل والصيانة من أهم نقاط قوتنا حيث نوفر لجميع أعمال التشغيل والصيانة والإصلاحات وفقاً لمتطلبات عملائنا.</p><a href="services.html">إكتشف المزيد</a></article>
+        <article data-specialization-step><span>🏢</span><h3>إدارة المرافق</h3><p>نقوم بإدارة جميع المرافق بجميع متطلباتها المالية والهندسية والقوى العاملة على أكمل وجه يطمح عميلنا وتلبية جميع طلباتهم.</p><a href="services.html">إكتشف المزيد</a></article>
+        <article data-specialization-step><span>🧽</span><h3>النظافة</h3><p>خدمات النظافة للمباني والمكاتب والفنادق والأبراج التجارية والمرافق العامة والخاصة بكفاءة عالية وكوادر مدربة وخبرة واسعة.</p><a href="services.html">إكتشف المزيد</a></article>
+      </div>
+    </section>
+
     <section class="section clients-section">
       <p class="eyebrow">عملاؤنا</p>
       <h2>شركاء نفخر بخدمتهم</h2>
       <div class="clients-track-wrapper">
         <div class="clients-track">
           <img src="assets/clients/Amazon.webp" alt="Amazon">
-          <img src="assets/clients/Civil deffence.png" alt="الدفاع المدني">
-          <img src="assets/clients/hunger station.png" alt="Hunger Station">
+          <img src="assets/clients/Civil deffence.webp" alt="الدفاع المدني">
+          <img src="assets/clients/hunger station.webp" alt="Hunger Station">
           <img src="assets/clients/Jahez.webp" alt="Jahez">
           <img src="assets/clients/keemart.webp" alt="Keemart">
           <img src="assets/clients/keeta.webp" alt="Keeta">
           <img src="assets/clients/Ninja.webp" alt="Ninja">
-          <img src="assets/clients/Noon Main.png" alt="Noon">
-          <img src="assets/clients/residence hotel.png" alt="Residence Hotel">
+          <img src="assets/clients/Noon Main.webp" alt="Noon">
+          <img src="assets/clients/residence hotel.webp" alt="Residence Hotel">
           <img src="assets/clients/the-chiefs.webp" alt="The Chief's">
         </div>
       </div>

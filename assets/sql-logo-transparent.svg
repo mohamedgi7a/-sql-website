@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 120" fill="none">
+  <g transform="translate(278 4) scale(.19)">
+    <path d="M208 66 82 192l126 126 82-82" stroke="#053e61" stroke-width="38" stroke-linejoin="miter"/>
+    <path d="M314 66 440 192 314 318 188 192l74-74" stroke="#16b3ae" stroke-width="38" stroke-linejoin="miter"/>
+    <path d="m248 248 38-38" stroke="#053e61" stroke-width="38" stroke-linejoin="miter"/>
+  </g>
+  <text x="250" y="48" fill="#053e61" font-family="Arial, Tahoma, sans-serif" font-size="34" font-weight="800" text-anchor="end">SQL</text>
+  <text x="250" y="78" fill="#053e61" font-family="Tajawal, Arial, Tahoma, sans-serif" font-size="23" font-weight="800" text-anchor="end">صقور الإتقان</text>
+  <text x="250" y="101" fill="#16b3ae" font-family="Arial, Tahoma, sans-serif" font-size="14" font-weight="700" letter-spacing="1" text-anchor="end">SUPPORT SERVICES</text>
+</svg>

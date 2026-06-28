@@ -266,7 +266,7 @@ const loadBlogPosts = async () => {
 
     featuredPost.hidden = false;
     featuredPost.innerHTML = `
-      <img src="${firstPost.image_url || "https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=1200&q=80"}" alt="${plainText(firstPost.title)}">
+      <img src="${firstPost.image_url || (isArabic ? "assets/about-vision.webp" : "../assets/about-vision.webp")}" alt="${plainText(firstPost.title)}">
       <div>
         <p class="eyebrow">${isArabic ? "مقال مميز" : "Featured"}</p>
         <h2>${plainText(firstPost.title)}</h2>
@@ -318,7 +318,7 @@ const loadBlogArticle = async () => {
     if (articleLoading) articleLoading.hidden = true;
 
     blogArticle.innerHTML = `
-      <img class="article-cover" src="${post.image_url || "https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=1400&q=80"}" alt="${safeText(post.title)}">
+      <img class="article-cover" src="${post.image_url || (isArabic ? "assets/about-vision.webp" : "../assets/about-vision.webp")}" alt="${safeText(post.title)}">
       <p class="eyebrow">${safeText(post.category)}</p>
       <h1>${safeText(post.title)}</h1>
       <p class="article-excerpt">${safeText(post.excerpt)}</p>
@@ -455,7 +455,7 @@ window.addEventListener("load", function () {
   track.dataset.marqueeReady = "true";
 });
 
-const revealItems = document.querySelectorAll(".section, .section-head, .section-heading, .trust-strip > div, .service-grid .service-card, .project-card, .post-card, .values-grid article, .process-list article, .featured-post, .blog-sidebar > div, .media-panel, .contact-info, .contact-form, .falfa-feature-strip article, .falfa-values-grid article, .falfa-service-card, .falfa-sectors-grid article, .falfa-news-grid article, .opening-logo-card, .opening-service, .falfa-company-intro, .vision-text, .vision-photo, .footer-group");
+const revealItems = document.querySelectorAll(".section, .section-head, .section-heading, .trust-strip > div, .service-grid .service-card, .project-card, .post-card, .values-grid article, .process-list article, .featured-post, .blog-sidebar > div, .media-panel, .contact-info, .contact-form, .falfa-feature-strip article, .falfa-values-grid article, .falfa-news-grid article, .opening-logo-card, .opening-service, .falfa-company-intro, .footer-group");
 
 if ("IntersectionObserver" in window) {
   const revealSequence = [
@@ -470,7 +470,7 @@ if ("IntersectionObserver" in window) {
   revealItems.forEach((item, index) => {
     item.classList.add("reveal", revealSequence[index % revealSequence.length]);
 
-    if (item.matches(".service-card, .project-card, .post-card, .values-grid article, .process-list article, .trust-strip > div, .falfa-feature-strip article, .falfa-values-grid article, .falfa-service-card, .falfa-sectors-grid article, .falfa-news-grid article, .opening-service, .vision-text, .vision-photo, .footer-group")) {
+    if (item.matches(".service-card, .project-card, .post-card, .values-grid article, .process-list article, .trust-strip > div, .falfa-feature-strip article, .falfa-values-grid article, .falfa-news-grid article, .opening-service, .footer-group")) {
       const baseDelay = item.classList.contains("reveal-bounceIn") ? 700 : Math.min(index % 6, 5) * 90;
       item.style.setProperty("--reveal-delay", `${baseDelay}ms`);
     }
@@ -619,28 +619,143 @@ if (falfaHeroBackgrounds.length) {
   }
 }
 
-const visionRows = document.querySelectorAll(".vision-row");
+document.querySelectorAll("[data-timeline-section]").forEach((section) => {
+  const rows = [...section.querySelectorAll("[data-timeline-step]")];
+  if (!rows.length) return;
 
-if (visionRows.length) {
-  if (reducedMotion) {
-    visionRows.forEach(row => row.classList.add("row-visible"));
-  } else {
-    let observerReady = false;
+  const timelineFrameMs = 100;
+  const rowDelayFrames = 6;
 
-    const rowObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
-        rowObserver.unobserve(entry.target);
-        const delay = observerReady ? 0 : 280;
-        setTimeout(() => {
-          requestAnimationFrame(() => entry.target.classList.add("row-visible"));
-        }, delay);
-      });
-    }, { threshold: 0.15 });
+  rows.forEach((row, index) => {
+    row.style.setProperty("--step-delay", `${index * rowDelayFrames * timelineFrameMs}ms`);
+  });
 
-    requestAnimationFrame(() => {
-      visionRows.forEach(row => rowObserver.observe(row));
-      setTimeout(() => { observerReady = true; }, 600);
-    });
+  const activateTimeline = () => {
+    section.classList.add("timeline-active");
+    rows.forEach((row) => row.classList.add("row-visible"));
+  };
+
+  if (reducedMotion || !("IntersectionObserver" in window)) {
+    activateTimeline();
+    return;
   }
-}
+
+  const timelineObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      activateTimeline();
+      timelineObserver.unobserve(entry.target);
+    });
+  }, { threshold: 0.22, rootMargin: "0px 0px -10% 0px" });
+
+  timelineObserver.observe(section);
+});
+
+document.querySelectorAll("[data-services-timeline]").forEach((section) => {
+  const cards = [...section.querySelectorAll("[data-service-step]")];
+  if (!cards.length) return;
+
+  const timelineFrameMs = 100;
+  const cardDelayFrames = 3;
+
+  cards.forEach((card, index) => {
+    card.style.setProperty("--service-delay", `${index * cardDelayFrames * timelineFrameMs}ms`);
+  });
+
+  const activateServicesTimeline = () => {
+    section.classList.add("timeline-active");
+  };
+
+  if (reducedMotion || !("IntersectionObserver" in window)) {
+    activateServicesTimeline();
+    return;
+  }
+
+  const servicesObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      activateServicesTimeline();
+      servicesObserver.unobserve(entry.target);
+    });
+  }, { threshold: 0.18, rootMargin: "0px 0px -8% 0px" });
+
+  servicesObserver.observe(section);
+});
+
+document.querySelectorAll("[data-business-solutions]").forEach((section) => {
+  const cards = [...section.querySelectorAll("[data-business-step]")];
+  if (!cards.length) return;
+
+  cards.forEach((card, index) => {
+    card.style.setProperty("--business-delay", `${index * 120}ms`);
+  });
+
+  const activateBusinessSolutions = () => section.classList.add("timeline-active");
+
+  if (reducedMotion || !("IntersectionObserver" in window)) {
+    activateBusinessSolutions();
+    return;
+  }
+
+  const businessObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      activateBusinessSolutions();
+      businessObserver.unobserve(entry.target);
+    });
+  }, { threshold: 0.2, rootMargin: "0px 0px -8% 0px" });
+
+  businessObserver.observe(section);
+});
+
+document.querySelectorAll("[data-sectors-motion]").forEach((section) => {
+  const sectors = [...section.querySelectorAll("[data-sector-step]")];
+  if (!sectors.length) return;
+
+  sectors.forEach((sector, index) => {
+    sector.style.setProperty("--sector-delay", `${index * 90}ms`);
+  });
+
+  const activateSectors = () => section.classList.add("timeline-active");
+
+  if (reducedMotion || !("IntersectionObserver" in window)) {
+    activateSectors();
+    return;
+  }
+
+  const sectorsObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      activateSectors();
+      sectorsObserver.unobserve(entry.target);
+    });
+  }, { threshold: 0.28, rootMargin: "0px 0px -10% 0px" });
+
+  sectorsObserver.observe(section);
+});
+
+document.querySelectorAll("[data-specializations]").forEach((section) => {
+  const items = [...section.querySelectorAll("[data-specialization-step]")];
+  if (!items.length) return;
+
+  items.forEach((item, index) => {
+    item.style.setProperty("--specialization-delay", `${index * 110}ms`);
+  });
+
+  const activateSpecializations = () => section.classList.add("timeline-active");
+
+  if (reducedMotion || !("IntersectionObserver" in window)) {
+    activateSpecializations();
+    return;
+  }
+
+  const specializationsObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      activateSpecializations();
+      specializationsObserver.unobserve(entry.target);
+    });
+  }, { threshold: 0.18, rootMargin: "0px 0px -8% 0px" });
+
+  specializationsObserver.observe(section);
+});
