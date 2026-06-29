@@ -538,6 +538,57 @@ if (typedPhoneItems.length) {
   }
 }
 
+const fastTypewriterItems = document.querySelectorAll("[data-fast-typewriter]");
+
+const animateFastTypewriter = (element) => {
+  const fullText = element.dataset.fullText || element.textContent.trim();
+  if (!fullText || element.dataset.typed === "true") return;
+
+  element.dataset.typed = "true";
+  element.dataset.fullText = fullText;
+
+  if (reducedMotion) {
+    element.textContent = fullText;
+    element.classList.add("is-complete");
+    return;
+  }
+
+  const speed = Number(element.dataset.typewriterSpeed || 8);
+  element.textContent = "";
+  element.classList.add("is-typing");
+
+  let index = 0;
+  const typeNext = () => {
+    element.textContent = fullText.slice(0, index + 1);
+    index += 1;
+
+    if (index < fullText.length) {
+      window.setTimeout(typeNext, speed);
+    } else {
+      element.classList.remove("is-typing");
+      element.classList.add("is-complete");
+    }
+  };
+
+  typeNext();
+};
+
+if (fastTypewriterItems.length) {
+  if ("IntersectionObserver" in window) {
+    const typewriterObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        animateFastTypewriter(entry.target);
+        typewriterObserver.unobserve(entry.target);
+      });
+    }, { threshold: 0.32 });
+
+    fastTypewriterItems.forEach((item) => typewriterObserver.observe(item));
+  } else {
+    fastTypewriterItems.forEach(animateFastTypewriter);
+  }
+}
+
 const metricItems = document.querySelectorAll(".metric[data-count]");
 
 const formatMetric = (value, suffix) => {
@@ -759,3 +810,103 @@ document.querySelectorAll("[data-specializations]").forEach((section) => {
 
   specializationsObserver.observe(section);
 });
+
+/* ===== Interactive particle network background (about/opening section) ===== */
+(function () {
+  const section = document.querySelector(".falfa-opening");
+  const canvas = section && section.querySelector(".net-bg");
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
+  const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const LINK_DIST = 130;     // distance to link two particles
+  const MOUSE_DIST = 180;    // distance to link a particle to the cursor
+  const LINE = "3, 50, 83";  // navy lines between particles
+  const ACCENT = "3, 168, 173"; // teal links to the cursor
+
+  let W = 0, H = 0, DPR = 1, points = [], raf = 0;
+  const mouse = { x: null, y: null };
+
+  function build() {
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
+    const rect = section.getBoundingClientRect();
+    W = Math.max(1, rect.width);
+    H = Math.max(1, rect.height);
+    canvas.width = W * DPR;
+    canvas.height = H * DPR;
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    const count = Math.round(Math.min(95, (W * H) / 14000));
+    points = Array.from({ length: count }, () => ({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: (Math.random() - 0.5) * 0.3
+    }));
+  }
+
+  function frame() {
+    ctx.clearRect(0, 0, W, H);
+    for (let i = 0; i < points.length; i++) {
+      const p = points[i];
+      p.x += p.vx;
+      p.y += p.vy;
+      if (p.x < 0 || p.x > W) p.vx *= -1;
+      if (p.y < 0 || p.y > H) p.vy *= -1;
+
+      // links between nearby particles
+      for (let j = i + 1; j < points.length; j++) {
+        const q = points[j];
+        const dx = p.x - q.x, dy = p.y - q.y;
+        const d = Math.hypot(dx, dy);
+        if (d < LINK_DIST) {
+          ctx.strokeStyle = "rgba(" + LINE + "," + (0.18 * (1 - d / LINK_DIST)).toFixed(3) + ")";
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(q.x, q.y);
+          ctx.stroke();
+        }
+      }
+
+      // link to the cursor + gentle push away
+      if (mouse.x !== null) {
+        const dx = p.x - mouse.x, dy = p.y - mouse.y;
+        const d = Math.hypot(dx, dy) || 0.001;
+        if (d < MOUSE_DIST) {
+          ctx.strokeStyle = "rgba(" + ACCENT + "," + (0.55 * (1 - d / MOUSE_DIST)).toFixed(3) + ")";
+          ctx.lineWidth = 1.1;
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(mouse.x, mouse.y);
+          ctx.stroke();
+          const push = ((MOUSE_DIST - d) / MOUSE_DIST) * 0.7;
+          p.x += (dx / d) * push;
+          p.y += (dy / d) * push;
+        }
+      }
+
+      ctx.fillStyle = "rgba(" + ACCENT + ",0.6)";
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 1.7, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    raf = requestAnimationFrame(frame);
+  }
+
+  function start() {
+    build();
+    if (prefersReduced) return;
+    cancelAnimationFrame(raf);
+    frame();
+  }
+
+  section.addEventListener("mousemove", (e) => {
+    const r = section.getBoundingClientRect();
+    mouse.x = e.clientX - r.left;
+    mouse.y = e.clientY - r.top;
+  });
+  section.addEventListener("mouseleave", () => { mouse.x = null; mouse.y = null; });
+  window.addEventListener("resize", build, { passive: true });
+
+  start();
+})();
