@@ -4817,6 +4817,54 @@ body:not(.motion-ready) .opening-logo-card img {
   animation-play-state: paused;
 }
 
+/* Contact pages responsive repair: avoid squeezed columns at narrow widths/zoom. */
+.contact-quick-cards,
+.contact-layout {
+  width: min(var(--content-max), calc(100% - 44px));
+  padding-inline: 0;
+}
+
+.contact-quick-cards {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+}
+
+.contact-layout {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr));
+}
+
+.contact-quick-cards article,
+.contact-form,
+.contact-info {
+  min-width: 0;
+}
+
+.contact-quick-cards h3,
+.contact-quick-cards p,
+.contact-info h2,
+.contact-info p,
+.info-line strong {
+  overflow-wrap: anywhere;
+}
+
+.info-line {
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+@media (max-width: 820px) {
+  .contact-quick-cards,
+  .contact-layout {
+    width: min(620px, calc(100% - 36px));
+    grid-template-columns: 1fr;
+  }
+
+  .contact-form,
+  .contact-info,
+  .contact-quick-cards article {
+    padding: 24px 22px;
+  }
+}
+
 .site-header .brand-mark {
   width: 94px;
   height: 94px;
