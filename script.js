@@ -162,11 +162,28 @@ updateParallaxSections();
 
 const pageLanguage = document.documentElement.lang || (document.documentElement.dir === "rtl" ? "ar" : "en");
 const isArabic = document.documentElement.dir === "rtl";
+const isChinese = pageLanguage.toLowerCase().startsWith("zh");
+
+const uiText = {
+  sending: isArabic ? "جاري الإرسال..." : isChinese ? "正在发送..." : "Sending...",
+  success: isArabic ? "تم إرسال الطلب بنجاح. سيتواصل معك فريقنا قريبا." : isChinese ? "您的请求已成功发送。我们的团队将尽快与您联系。" : "Your request has been sent successfully. Our team will contact you soon.",
+  error: isArabic ? "تعذر الإرسال حاليا. حاول مرة أخرى أو تواصل معنا مباشرة." : isChinese ? "暂时无法发送。请稍后重试或直接联系我们。" : "We could not send the form right now. Please try again or contact us directly.",
+  readArticle: isArabic ? "قراءة المقال" : isChinese ? "阅读文章" : "Read article",
+  noPosts: isArabic ? "لا توجد مقالات منشورة بعد" : isChinese ? "暂无已发布文章" : "No published articles yet",
+  featured: isArabic ? "مقال مميز" : isChinese ? "精选文章" : "Featured",
+  postsError: isArabic ? "تعذر تحميل المقالات حاليا." : isChinese ? "暂时无法加载文章。" : "Could not load articles right now.",
+  noArticle: isArabic ? "لم يتم تحديد المقال." : isChinese ? "未选择文章。" : "No article selected.",
+  missingArticle: isArabic ? "المقال غير موجود أو غير منشور." : isChinese ? "文章不存在或尚未发布。" : "Article not found or not published.",
+  articleError: isArabic ? "تعذر تحميل المقال حاليا." : isChinese ? "暂时无法加载文章。" : "Could not load this article right now.",
+  requestService: isArabic ? "طلب هذه الخدمة" : isChinese ? "申请此服务" : "Request this service",
+  backToBlog: isArabic ? "العودة إلى المدونة" : isChinese ? "返回博客" : "Back to blog",
+  brandName: isArabic ? "صقور الإتقان" : isChinese ? "萨库尔精工" : "Saqour Al-Itqan"
+};
 
 const formMessages = {
-  sending: isArabic ? "جاري الإرسال..." : "Sending...",
-  success: isArabic ? "تم إرسال الطلب بنجاح. سيتواصل معك فريقنا قريبا." : "Your request has been sent successfully. Our team will contact you soon.",
-  error: isArabic ? "تعذر الإرسال حاليا. حاول مرة أخرى أو تواصل معنا مباشرة." : "We could not send the form right now. Please try again or contact us directly."
+  sending: uiText.sending,
+  success: uiText.success,
+  error: uiText.error
 };
 
 const readFormValue = (formData, name) => String(formData.get(name) || "").trim();
@@ -271,7 +288,7 @@ const renderBlogPostCard = (post) => `
     <h3>${plainText(post.title)}</h3>
     <p>${plainText(post.excerpt)}</p>
     <div class="tag-list compact-tags">${(post.keywords || []).slice(0, 4).map((tag) => `<span>${plainText(tag)}</span>`).join("")}</div>
-    <a href="${blogPostHref(post)}">${isArabic ? "قراءة المقال" : "Read article"}</a>
+    <a href="${blogPostHref(post)}">${uiText.readArticle}</a>
   </article>
 `;
 
@@ -294,7 +311,7 @@ const loadBlogPosts = async () => {
     if (blogLoading) blogLoading.hidden = true;
 
     if (!firstPost) {
-      blogGrid.innerHTML = `<div class="empty-state"><h3>${isArabic ? "لا توجد مقالات منشورة بعد" : "No published articles yet"}</h3></div>`;
+      blogGrid.innerHTML = `<div class="empty-state"><h3>${uiText.noPosts}</h3></div>`;
       return;
     }
 
@@ -302,11 +319,11 @@ const loadBlogPosts = async () => {
     featuredPost.innerHTML = `
       <img src="${firstPost.image_url || (isArabic ? "assets/about-vision.webp" : "../assets/about-vision.webp")}" alt="${plainText(firstPost.title)}">
       <div>
-        <p class="eyebrow">${isArabic ? "مقال مميز" : "Featured"}</p>
+        <p class="eyebrow">${uiText.featured}</p>
         <h2>${plainText(firstPost.title)}</h2>
         <p>${plainText(firstPost.excerpt)}</p>
         <div class="tag-list compact-tags">${(firstPost.keywords || []).slice(0, 6).map((tag) => `<span>${plainText(tag)}</span>`).join("")}</div>
-        <a class="text-link" href="${blogPostHref(firstPost)}">${isArabic ? "قراءة المقال" : "Read article"}</a>
+        <a class="text-link" href="${blogPostHref(firstPost)}">${uiText.readArticle}</a>
       </div>
     `;
 
@@ -314,7 +331,7 @@ const loadBlogPosts = async () => {
   } catch (error) {
     console.error(error);
     if (blogLoading) {
-      blogLoading.textContent = isArabic ? "تعذر تحميل المقالات حاليا." : "Could not load articles right now.";
+      blogLoading.textContent = uiText.postsError;
     }
   }
 };
@@ -327,7 +344,7 @@ const loadBlogArticle = async () => {
   const slug = new URLSearchParams(window.location.search).get("slug");
 
   if (!slug) {
-    if (articleLoading) articleLoading.textContent = isArabic ? "لم يتم تحديد المقال." : "No article selected.";
+    if (articleLoading) articleLoading.textContent = uiText.noArticle;
     return;
   }
 
@@ -344,11 +361,11 @@ const loadBlogArticle = async () => {
     const [post] = await response.json();
 
     if (!post) {
-      if (articleLoading) articleLoading.textContent = isArabic ? "المقال غير موجود أو غير منشور." : "Article not found or not published.";
+      if (articleLoading) articleLoading.textContent = uiText.missingArticle;
       return;
     }
 
-    document.title = `${post.title} | ${isArabic ? "صقور الإتقان" : "Saqour Al-Itqan"}`;
+    document.title = `${post.title} | ${uiText.brandName}`;
     if (articleLoading) articleLoading.hidden = true;
 
     blogArticle.innerHTML = `
@@ -359,13 +376,13 @@ const loadBlogArticle = async () => {
       <div class="tag-list compact-tags">${(post.keywords || []).map((tag) => `<span>${safeText(tag)}</span>`).join("")}</div>
       <div class="article-body">${plainText(post.content).split("\n").filter(Boolean).map((paragraph) => `<p>${safeText(paragraph)}</p>`).join("")}</div>
       <div class="article-actions">
-        <a class="btn btn-primary" href="service-request.html">${isArabic ? "طلب هذه الخدمة" : "Request this service"}</a>
-        <a class="text-link" href="blog.html">${isArabic ? "العودة إلى المدونة" : "Back to blog"}</a>
+        <a class="btn btn-primary" href="service-request.html">${uiText.requestService}</a>
+        <a class="text-link" href="blog.html">${uiText.backToBlog}</a>
       </div>
     `;
   } catch (error) {
     console.error(error);
-    if (articleLoading) articleLoading.textContent = isArabic ? "تعذر تحميل المقال حاليا." : "Could not load this article right now.";
+    if (articleLoading) articleLoading.textContent = uiText.articleError;
   }
 };
 
