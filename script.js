@@ -50,6 +50,40 @@ document.querySelectorAll(".filters button").forEach((button) => {
 });
 
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const initialMotionDelay = 700;
+let motionReady = false;
+
+const releaseMotion = () => {
+  if (motionReady) return;
+  motionReady = true;
+  document.body.classList.add("motion-ready");
+  window.dispatchEvent(new Event("motionready"));
+};
+
+const scheduleMotionReady = () => {
+  if (reducedMotion) {
+    releaseMotion();
+    return;
+  }
+
+  window.setTimeout(releaseMotion, initialMotionDelay);
+};
+
+const runWhenMotionReady = (callback) => {
+  if (motionReady) {
+    callback();
+    return;
+  }
+
+  window.addEventListener("motionready", callback, { once: true });
+};
+
+if (document.readyState === "complete") {
+  scheduleMotionReady();
+} else {
+  window.addEventListener("load", scheduleMotionReady, { once: true });
+}
+
 const supabaseConfig = {
   url: "https://ibnjrcoqiactimyhhksf.supabase.co",
   key: "sb_publishable_LpQzLxdeisfx1KG9PkM50g_Cdy2--xX"
@@ -479,8 +513,10 @@ if ("IntersectionObserver" in window) {
   const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
-        entry.target.classList.add("is-visible");
         revealObserver.unobserve(entry.target);
+        runWhenMotionReady(() => {
+          entry.target.classList.add("is-visible");
+        });
       }
     });
   }, { threshold: 0.14 });
@@ -526,8 +562,10 @@ if (typedPhoneItems.length) {
     const phoneObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          animateTypewriterNumber(entry.target);
           phoneObserver.unobserve(entry.target);
+          runWhenMotionReady(() => {
+            animateTypewriterNumber(entry.target);
+          });
         }
       });
     }, { threshold: 0.3 });
@@ -578,8 +616,10 @@ if (fastTypewriterItems.length) {
     const typewriterObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
-        animateFastTypewriter(entry.target);
         typewriterObserver.unobserve(entry.target);
+        runWhenMotionReady(() => {
+          animateFastTypewriter(entry.target);
+        });
       });
     }, { threshold: 0.32 });
 
@@ -631,8 +671,10 @@ if (metricItems.length) {
     const metricObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          animateMetric(entry.target);
           metricObserver.unobserve(entry.target);
+          runWhenMotionReady(() => {
+            animateMetric(entry.target);
+          });
         }
       });
     }, { threshold: 0.42 });
@@ -687,15 +729,15 @@ document.querySelectorAll("[data-timeline-section]").forEach((section) => {
   };
 
   if (reducedMotion || !("IntersectionObserver" in window)) {
-    activateTimeline();
+    runWhenMotionReady(activateTimeline);
     return;
   }
 
   const timelineObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (!entry.isIntersecting) return;
-      activateTimeline();
       timelineObserver.unobserve(entry.target);
+      runWhenMotionReady(activateTimeline);
     });
   }, { threshold: 0.22, rootMargin: "0px 0px -10% 0px" });
 
@@ -718,15 +760,15 @@ document.querySelectorAll("[data-services-timeline]").forEach((section) => {
   };
 
   if (reducedMotion || !("IntersectionObserver" in window)) {
-    activateServicesTimeline();
+    runWhenMotionReady(activateServicesTimeline);
     return;
   }
 
   const servicesObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (!entry.isIntersecting) return;
-      activateServicesTimeline();
       servicesObserver.unobserve(entry.target);
+      runWhenMotionReady(activateServicesTimeline);
     });
   }, { threshold: 0.18, rootMargin: "0px 0px -8% 0px" });
 
@@ -744,15 +786,15 @@ document.querySelectorAll("[data-business-solutions]").forEach((section) => {
   const activateBusinessSolutions = () => section.classList.add("timeline-active");
 
   if (reducedMotion || !("IntersectionObserver" in window)) {
-    activateBusinessSolutions();
+    runWhenMotionReady(activateBusinessSolutions);
     return;
   }
 
   const businessObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (!entry.isIntersecting) return;
-      activateBusinessSolutions();
       businessObserver.unobserve(entry.target);
+      runWhenMotionReady(activateBusinessSolutions);
     });
   }, { threshold: 0.2, rootMargin: "0px 0px -8% 0px" });
 
@@ -770,15 +812,15 @@ document.querySelectorAll("[data-sectors-motion]").forEach((section) => {
   const activateSectors = () => section.classList.add("timeline-active");
 
   if (reducedMotion || !("IntersectionObserver" in window)) {
-    activateSectors();
+    runWhenMotionReady(activateSectors);
     return;
   }
 
   const sectorsObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (!entry.isIntersecting) return;
-      activateSectors();
       sectorsObserver.unobserve(entry.target);
+      runWhenMotionReady(activateSectors);
     });
   }, { threshold: 0.28, rootMargin: "0px 0px -10% 0px" });
 
@@ -796,15 +838,15 @@ document.querySelectorAll("[data-specializations]").forEach((section) => {
   const activateSpecializations = () => section.classList.add("timeline-active");
 
   if (reducedMotion || !("IntersectionObserver" in window)) {
-    activateSpecializations();
+    runWhenMotionReady(activateSpecializations);
     return;
   }
 
   const specializationsObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (!entry.isIntersecting) return;
-      activateSpecializations();
       specializationsObserver.unobserve(entry.target);
+      runWhenMotionReady(activateSpecializations);
     });
   }, { threshold: 0.18, rootMargin: "0px 0px -8% 0px" });
 

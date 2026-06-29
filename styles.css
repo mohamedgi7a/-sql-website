@@ -4761,6 +4761,11 @@ html[dir="ltr"] .blog-sidebar {
   display: none;
 }
 
+body:not(.motion-ready) .opening-service,
+body:not(.motion-ready) .opening-logo-card img {
+  animation-play-state: paused;
+}
+
 .site-header .brand-mark {
   width: 94px;
   height: 94px;
