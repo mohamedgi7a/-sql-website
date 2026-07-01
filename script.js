@@ -2,6 +2,27 @@ const toggle = document.querySelector(".nav-toggle");
 const nav = document.querySelector(".site-nav");
 const header = document.querySelector(".site-header");
 
+/* Sticky header: add a compact state once the page scrolls past the
+   hero, so the header stays visible but takes less vertical space. */
+if (header) {
+  const HEADER_SCROLL_THRESHOLD = 80;
+  let headerTicking = false;
+
+  const applyHeaderScrollState = () => {
+    headerTicking = false;
+    header.classList.toggle("is-scrolled", window.scrollY > HEADER_SCROLL_THRESHOLD);
+  };
+
+  const queueHeaderScrollState = () => {
+    if (headerTicking) return;
+    headerTicking = true;
+    window.requestAnimationFrame(applyHeaderScrollState);
+  };
+
+  window.addEventListener("scroll", queueHeaderScrollState, { passive: true });
+  applyHeaderScrollState();
+}
+
 if (toggle && nav) {
   const closeNav = () => {
     nav.classList.remove("open");
@@ -506,7 +527,13 @@ window.addEventListener("load", function () {
   track.dataset.marqueeReady = "true";
 });
 
-const revealItems = document.querySelectorAll(".section, .section-head, .section-heading, .trust-strip > div, .service-grid .service-card, .project-card, .post-card, .values-grid article, .process-list article, .featured-post, .blog-sidebar > div, .media-panel, .contact-info, .contact-form, .falfa-feature-strip article, .falfa-values-grid article, .falfa-news-grid article, .opening-logo-card, .opening-service, .falfa-company-intro, .footer-group");
+/* NOTE: whole `.section` containers and headings are intentionally
+   excluded here. Revealing an entire section as opacity:0 leaves it
+   blank until 14% of it scrolls in, which reads as a flash/glitch on
+   fast scrolls. Headings have their own dedicated underline reveal
+   below, so including them here caused competing transition+animation
+   on the same element (jank). We only reveal the smaller inner blocks. */
+const revealItems = document.querySelectorAll(".trust-strip > div, .service-grid .service-card, .project-card, .post-card, .values-grid article, .process-list article, .featured-post, .blog-sidebar > div, .media-panel, .contact-info, .contact-form, .falfa-feature-strip article, .falfa-values-grid article, .falfa-news-grid article, .opening-logo-card, .opening-service, .falfa-company-intro, .footer-group");
 
 if ("IntersectionObserver" in window) {
   const revealSequence = [
@@ -522,7 +549,7 @@ if ("IntersectionObserver" in window) {
     item.classList.add("reveal", revealSequence[index % revealSequence.length]);
 
     if (item.matches(".service-card, .project-card, .post-card, .values-grid article, .process-list article, .trust-strip > div, .falfa-feature-strip article, .falfa-values-grid article, .falfa-news-grid article, .opening-service, .footer-group")) {
-      const baseDelay = item.classList.contains("reveal-bounceIn") ? 700 : Math.min(index % 6, 5) * 90;
+      const baseDelay = Math.min(index % 4, 3) * 60;
       item.style.setProperty("--reveal-delay", `${baseDelay}ms`);
     }
   });
@@ -536,8 +563,31 @@ if ("IntersectionObserver" in window) {
         });
       }
     });
-  }, { threshold: 0.14 });
+  }, { threshold: 0, rootMargin: "0px 0px -12% 0px" });
   revealItems.forEach((item) => revealObserver.observe(item));
+
+  /* Fast-scroll safety net: if the user scrolls past an element so
+     quickly that the observer callback is throttled, reveal anything
+     already inside (or above) the viewport on the next scroll idle so
+     nothing is ever left stuck at opacity:0. */
+  let revealSweepQueued = false;
+  const revealSweep = () => {
+    revealSweepQueued = false;
+    const vh = window.innerHeight || document.documentElement.clientHeight;
+    revealItems.forEach((item) => {
+      if (item.classList.contains("is-visible")) return;
+      const rect = item.getBoundingClientRect();
+      if (rect.top < vh * 0.92) {
+        revealObserver.unobserve(item);
+        runWhenMotionReady(() => item.classList.add("is-visible"));
+      }
+    });
+  };
+  window.addEventListener("scroll", () => {
+    if (revealSweepQueued) return;
+    revealSweepQueued = true;
+    window.requestAnimationFrame(revealSweep);
+  }, { passive: true });
 }
 
 const phoneNumbers = document.querySelectorAll(".footer-contact strong");
@@ -868,6 +918,77 @@ document.querySelectorAll("[data-specializations]").forEach((section) => {
   }, { threshold: 0.18, rootMargin: "0px 0px -8% 0px" });
 
   specializationsObserver.observe(section);
+});
+
+/* ===== Animated heading underline (section titles across the site) =====
+   Mirrors the "draw-in" underline treatment used as a reference: a
+   short accent line/eyebrow/heading fades and draws itself in the
+   moment the section title enters the viewport, instead of always
+   being visible. Falls back to an immediate reveal when motion is
+   reduced or IntersectionObserver is unavailable, so headings are
+   never left invisible. */
+(function () {
+  const headings = document.querySelectorAll(
+    ".section-heading, .section-head, .business-title, .specializations-title"
+  );
+  if (!headings.length) return;
+
+  const revealHeading = (el) => el.classList.add("heading-in-view");
+
+  if (reducedMotion || !("IntersectionObserver" in window)) {
+    headings.forEach(revealHeading);
+    return;
+  }
+
+  const headingObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        headingObserver.unobserve(entry.target);
+        runWhenMotionReady(() => revealHeading(entry.target));
+      });
+    },
+    { threshold: 0.2, rootMargin: "0px 0px -8% 0px" }
+  );
+
+  headings.forEach((el) => headingObserver.observe(el));
+
+  /* Safety net: if for any reason a heading never intersects (e.g. it
+     is already in view before the observer attaches on very short
+     pages) make sure it still reveals shortly after load. */
+  runWhenMotionReady(() => {
+    window.setTimeout(() => headings.forEach(revealHeading), 2500);
+  });
+})();
+
+/* ===== Dotted coverage map (home page) ===== */
+document.querySelectorAll("[data-map-motion]").forEach((section) => {
+  const dots = [...section.querySelectorAll("[data-map-dot]")];
+  const cities = [...section.querySelectorAll("[data-map-city]")];
+  if (!dots.length && !cities.length) return;
+
+  dots.forEach((dot, index) => dot.style.setProperty("--dot-delay", `${(index % 26) * 26}ms`));
+  cities.forEach((city, index) => city.style.setProperty("--city-delay", `${220 + index * 130}ms`));
+
+  const activateMap = () => section.classList.add("timeline-active");
+
+  if (reducedMotion || !("IntersectionObserver" in window)) {
+    runWhenMotionReady(activateMap);
+    return;
+  }
+
+  const mapObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        mapObserver.unobserve(entry.target);
+        runWhenMotionReady(activateMap);
+      });
+    },
+    { threshold: 0.2, rootMargin: "0px 0px -8% 0px" }
+  );
+
+  mapObserver.observe(section);
 });
 
 /* ===== Interactive particle network background (about/opening section) ===== */
